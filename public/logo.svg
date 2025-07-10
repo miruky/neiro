@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-labelledby="logo-title">
+  <title id="logo-title">neiro - 波形のロゴ</title>
+  <style>
+    .bg { fill: #f3f4f8; }
+    .wave { stroke: #5b6cff; }
+    @media (prefers-color-scheme: dark) {
+      .bg { fill: #121319; }
+      .wave { stroke: #8b97ff; }
+    }
+  </style>
+  <rect class="bg" width="128" height="128" rx="28" />
+  <path
+    class="wave"
+    d="M16 64 H34 L44 30 L60 98 L72 46 L80 78 L88 64 H112"
+    fill="none"
+    stroke-width="7"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  />
+</svg>
