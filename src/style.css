@@ -1,0 +1,497 @@
+/* 冷たいニュートラルの地に電気的なインディゴのアクセント。信号(波形・特性)は
+   アクセント色で示す。ライト・ダークはOS設定に追従し、余白は8pxの倍数で揃える。 */
+
+:root {
+  color-scheme: light dark;
+  --bg: #f3f4f8;
+  --surface: #ffffff;
+  --panel: #fbfbfd;
+  --ink: #1b1d24;
+  --muted: #6b6f7d;
+  --line: #e3e5ec;
+  --line-strong: #d2d5e0;
+  --accent: #5b6cff;
+  --accent-ink: #ffffff;
+  --accent-soft: #e7e9ff;
+  --grid: #eceef4;
+  --shadow-sm: 0 1px 2px rgb(20 22 30 / 0.05);
+  --shadow-lg: 0 22px 50px -24px rgb(20 22 30 / 0.35);
+  --radius: 14px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #121319;
+    --surface: #1c1e26;
+    --panel: #20222c;
+    --ink: #e8e9f0;
+    --muted: #9a9eb0;
+    --line: #2c2f3a;
+    --line-strong: #3a3e4c;
+    --accent: #8b97ff;
+    --accent-ink: #14151b;
+    --accent-soft: #262a44;
+    --grid: #23262f;
+    --shadow-lg: 0 22px 50px -24px rgb(0 0 0 / 0.7);
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', system-ui, sans-serif;
+  font-size: 16px;
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+h2 {
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  margin: 0 0 12px;
+  color: var(--muted);
+}
+
+/* ---- 骨格 ---- */
+
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: color-mix(in srgb, var(--bg) 84%, transparent);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--line);
+}
+
+.site-header-inner {
+  max-width: 72rem;
+  margin: 0 auto;
+  padding: 12px 24px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  font-weight: 700;
+  font-size: 1.1rem;
+  letter-spacing: 0.04em;
+}
+
+.brand svg {
+  width: 24px;
+  height: 24px;
+  color: var(--accent);
+}
+
+.tagline {
+  color: var(--muted);
+  font-size: 0.85rem;
+  margin-right: auto;
+}
+
+.master {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.82rem;
+  color: var(--muted);
+}
+
+.master input {
+  width: 120px;
+  accent-color: var(--accent);
+}
+
+.site-main {
+  max-width: 72rem;
+  margin: 0 auto;
+  padding: 24px 24px 88px;
+}
+
+.audio-hint {
+  margin: 0 0 20px;
+  padding: 10px 16px;
+  border-radius: 10px;
+  background: var(--accent-soft);
+  color: var(--ink);
+  font-size: 0.88rem;
+  transition: opacity 0.3s ease;
+}
+
+.audio-hint.hidden {
+  opacity: 0;
+  height: 0;
+  padding: 0;
+  margin: 0;
+  overflow: hidden;
+}
+
+.site-footer {
+  border-top: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 0.84rem;
+}
+
+.site-footer p {
+  max-width: 72rem;
+  margin: 0 auto;
+  padding: 18px 24px;
+}
+
+/* ---- 可視化 ---- */
+
+.visuals {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.viz {
+  margin: 0;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 14px 16px 8px;
+  box-shadow: var(--shadow-sm);
+}
+
+.viz figcaption {
+  font-size: 0.76rem;
+  font-weight: 600;
+  color: var(--muted);
+  margin-bottom: 6px;
+}
+
+.viz svg,
+.env {
+  width: 100%;
+  height: auto;
+  display: block;
+  background:
+    linear-gradient(var(--grid) 1px, transparent 1px) 0 50% / 100% 50%,
+    linear-gradient(90deg, var(--grid) 1px, transparent 1px) 25% 0 / 25% 100%;
+  border-radius: 8px;
+}
+
+.viz-line {
+  stroke: var(--ink);
+  stroke-width: 1.6;
+  vector-effect: non-scaling-stroke;
+}
+
+.viz-line.accent {
+  stroke: var(--accent);
+}
+
+/* ---- ラック ---- */
+
+.rack {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.module {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 18px;
+  box-shadow: var(--shadow-sm);
+  animation: rise 0.4s cubic-bezier(0.2, 0.7, 0.3, 1) both;
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.env {
+  margin-bottom: 12px;
+}
+
+/* ---- セグメント ---- */
+
+.segmented {
+  display: flex;
+  padding: 3px;
+  gap: 2px;
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+}
+
+.seg {
+  flex: 1;
+  padding: 6px 4px;
+  border: none;
+  border-radius: 7px;
+  background: none;
+  color: var(--muted);
+  font: inherit;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition:
+    color 0.15s ease,
+    background 0.2s ease;
+}
+
+.seg:hover:not(.active) {
+  color: var(--ink);
+}
+
+.seg.active {
+  background: var(--accent);
+  color: var(--accent-ink);
+  box-shadow: var(--shadow-sm);
+}
+
+.seg-label {
+  font-size: 0.76rem;
+  color: var(--muted);
+  margin: 10px 0 4px;
+}
+
+/* ---- つまみ(スライダ) ---- */
+
+.knobs {
+  display: grid;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.knob {
+  display: grid;
+  grid-template-columns: 5.5rem 1fr auto;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.82rem;
+}
+
+.knob-name {
+  color: var(--muted);
+}
+
+.knob input[type='range'] {
+  width: 100%;
+  accent-color: var(--accent);
+}
+
+.knob-val {
+  font-variant-numeric: tabular-nums;
+  color: var(--ink);
+  min-width: 4.5rem;
+  text-align: right;
+  font-size: 0.78rem;
+}
+
+/* ---- プリセット ---- */
+
+.presets {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin: 24px 0 20px;
+}
+
+.presets-label {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--muted);
+}
+
+.chip {
+  padding: 7px 14px;
+  border-radius: 999px;
+  border: 1px solid var(--line-strong);
+  background: var(--surface);
+  color: var(--ink);
+  font: inherit;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition:
+    border-color 0.15s ease,
+    transform 0.15s ease,
+    background 0.15s ease;
+}
+
+.chip:hover {
+  border-color: var(--accent);
+  transform: translateY(-1px);
+}
+
+/* ---- 演奏 ---- */
+
+.play {
+  margin-top: 8px;
+}
+
+.octave-shift {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 8px 12px;
+  border-radius: 10px;
+  border: 1px solid var(--line-strong);
+  background: var(--surface);
+  color: var(--ink);
+  font: inherit;
+  cursor: pointer;
+  transition:
+    border-color 0.15s ease,
+    transform 0.15s ease;
+}
+
+.button svg {
+  width: 18px;
+  height: 18px;
+}
+
+.button.ghost:hover {
+  border-color: var(--accent);
+  transform: translateY(-1px);
+}
+
+.keyboard {
+  position: relative;
+  height: 150px;
+  width: 100%;
+  border-radius: 12px;
+  background: var(--surface);
+  border: 1px solid var(--line-strong);
+  box-shadow: var(--shadow-lg);
+  overflow: hidden;
+  touch-action: none;
+}
+
+.key {
+  position: absolute;
+  top: 0;
+  padding: 0;
+  margin: 0;
+  border: none;
+  cursor: pointer;
+  font: inherit;
+}
+
+.key.white {
+  bottom: 0;
+  background: linear-gradient(var(--surface), #f0f1f6);
+  border-right: 1px solid var(--line-strong);
+  border-radius: 0 0 6px 6px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding-bottom: 8px;
+  color: var(--muted);
+  font-size: 0.7rem;
+}
+
+.key.black {
+  height: 62%;
+  background: linear-gradient(#3a3e4c, #1b1d24);
+  border-radius: 0 0 5px 5px;
+  transform: translateX(-50%);
+  z-index: 2;
+  box-shadow: 0 3px 6px rgb(0 0 0 / 0.35);
+}
+
+@media (prefers-color-scheme: dark) {
+  .key.white {
+    background: linear-gradient(#2a2d38, #20222c);
+  }
+
+  .key.black {
+    background: linear-gradient(#0c0d12, #05060a);
+  }
+}
+
+.key.on {
+  background: var(--accent);
+  color: var(--accent-ink);
+}
+
+.key:focus-visible {
+  outline-offset: -2px;
+}
+
+/* ---- モーション抑制 ---- */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+/* ---- 画面幅 ---- */
+
+@media (max-width: 880px) {
+  .rack {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .visuals {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 600px) {
+  .site-header-inner {
+    flex-wrap: wrap;
+  }
+
+  .tagline {
+    display: none;
+  }
+
+  .rack {
+    grid-template-columns: 1fr;
+  }
+
+  .knob {
+    grid-template-columns: 5rem 1fr auto;
+  }
+
+  .site-main {
+    padding: 16px 14px 72px;
+  }
+}
