@@ -138,6 +138,45 @@ export const PRESETS: readonly NamedPatch[] = [
       volume: 0.75,
     },
   },
+  {
+    name: '木のはじき',
+    patch: {
+      oscA: { waveform: 'triangle', octave: 0, detune: 0, level: 0.9 },
+      oscB: { waveform: 'sine', octave: 1, detune: -3, level: 0.4 },
+      noise: 0.03,
+      filter: { type: 'lowpass', cutoff: 2600, resonance: 4, envAmount: 0.6 },
+      ampEnv: { attack: 0.003, decay: 0.35, sustain: 0.0, release: 0.25 },
+      filterEnv: { attack: 0.003, decay: 0.28, sustain: 0.0, release: 0.2 },
+      lfo: { waveform: 'sine', rate: 5, depth: 0, target: 'pitch' },
+      volume: 0.82,
+    },
+  },
+  {
+    name: 'ワブル',
+    patch: {
+      oscA: { waveform: 'sawtooth', octave: -1, detune: -7, level: 0.85 },
+      oscB: { waveform: 'square', octave: -1, detune: 7, level: 0.6 },
+      noise: 0,
+      filter: { type: 'lowpass', cutoff: 700, resonance: 14, envAmount: 0.3 },
+      ampEnv: { attack: 0.01, decay: 0.3, sustain: 0.85, release: 0.3 },
+      filterEnv: { attack: 0.02, decay: 0.4, sustain: 0.4, release: 0.3 },
+      lfo: { waveform: 'triangle', rate: 4.5, depth: 0.7, target: 'filter' },
+      volume: 0.8,
+    },
+  },
+  {
+    name: '吹きガラス',
+    patch: {
+      oscA: { waveform: 'sine', octave: 0, detune: 0, level: 0.9 },
+      oscB: { waveform: 'triangle', octave: 1, detune: 5, level: 0.35 },
+      noise: 0.12,
+      filter: { type: 'bandpass', cutoff: 1800, resonance: 6, envAmount: 0.4 },
+      ampEnv: { attack: 0.4, decay: 0.8, sustain: 0.7, release: 1.2 },
+      filterEnv: { attack: 0.6, decay: 1.0, sustain: 0.5, release: 1.0 },
+      lfo: { waveform: 'sine', rate: 4, depth: 0.12, target: 'amplitude' },
+      volume: 0.72,
+    },
+  },
 ];
 
 function isObj(v: unknown): v is Record<string, unknown> {
