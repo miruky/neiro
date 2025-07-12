@@ -5,12 +5,28 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       name="description"
-      content="ブラウザで動く減算合成シンセサイザー。2基のオシレータ・フィルタ・エンベロープ・LFOを配線し、波形とフィルタ特性を見ながら音を作って演奏できる"
+      content="ブラウザの中だけで音を合成する減算方式シンセサイザー。2基のオシレータ・フィルタ・エンベロープ・LFOを配線し、波形とフィルタ特性を見ながら音を作って演奏できる。音色はURLで共有できる"
     />
-    <meta name="theme-color" content="#f3f4f8" media="(prefers-color-scheme: light)" />
-    <meta name="theme-color" content="#121319" media="(prefers-color-scheme: dark)" />
+    <meta name="theme-color" content="#f4f2ee" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#131419" media="(prefers-color-scheme: dark)" />
     <link rel="icon" type="image/svg+xml" href="/logo.svg" />
-    <title>neiro | ブラウザシンセサイザー</title>
+    <title>neiro — 配線して音を彫るシンセサイザー</title>
+    <script>
+      // 描画前にテーマを確定させ、初回のちらつき(FOUC)を防ぐ。判定の中身は
+      // theme.ts と同じだが、モジュールの読み込みを待てないため最小限をここに置く。
+      (function () {
+        try {
+          var stored = localStorage.getItem('neiro.theme.v1');
+          var choice =
+            stored === 'light' || stored === 'dark' || stored === 'system' ? stored : 'system';
+          var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+          document.documentElement.dataset.theme =
+            choice === 'system' ? (prefersDark ? 'dark' : 'light') : choice;
+        } catch (e) {
+          document.documentElement.dataset.theme = 'light';
+        }
+      })();
+    </script>
   </head>
   <body>
     <div id="app"></div>
