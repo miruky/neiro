@@ -1,21 +1,23 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 940 360" role="img" aria-labelledby="arch-title">
   <title id="arch-title">neiroの信号の流れ。2基のオシレータとノイズをミキサで混ぜ、フィルタとアンプを通して出力する。フィルタとアンプはそれぞれのエンベロープが、全体はLFOが時間変化を与える。</title>
   <style>
-    .box { fill: #ffffff; stroke: #e3e5ec; stroke-width: 1.5; }
-    .mod { fill: #f3f4f8; stroke: #d2d5e0; stroke-width: 1.5; }
-    .name { fill: #1b1d24; font: 600 15px system-ui, sans-serif; }
-    .label { fill: #6b6f7d; font: 12.5px system-ui, sans-serif; }
-    .sig { stroke: #5b6cff; stroke-width: 2; fill: none; marker-end: url(#a); }
-    .ctl { stroke: #9aa0b4; stroke-width: 1.6; fill: none; stroke-dasharray: 5 4; marker-end: url(#b); }
-    #a path { fill: #5b6cff; }
-    #b path { fill: #9aa0b4; }
+    .box { fill: none; stroke: #1c1b18; stroke-opacity: 0.2; stroke-width: 1.5; }
+    .mod { fill: none; stroke: #1c1b18; stroke-opacity: 0.14; stroke-width: 1.5; stroke-dasharray: 4 4; }
+    .name { fill: #1c1b18; font: 600 15px 'Hiragino Mincho ProN', serif; }
+    .label { fill: #837e72; font: 12.5px system-ui, sans-serif; }
+    .sig { stroke: #2f43e0; stroke-width: 2; fill: none; marker-end: url(#a); }
+    .ctl { stroke: #837e72; stroke-width: 1.5; fill: none; stroke-dasharray: 5 4; marker-end: url(#b); }
+    #a path { fill: #2f43e0; }
+    #b path { fill: #837e72; }
     @media (prefers-color-scheme: dark) {
-      .box { fill: #1c1e26; stroke: #2c2f3a; }
-      .mod { fill: #20222c; stroke: #3a3e4c; }
-      .name { fill: #e8e9f0; }
-      .label { fill: #9a9eb0; }
-      .sig { stroke: #8b97ff; }
-      #a path { fill: #8b97ff; }
+      .box { stroke: #e9e7e0; stroke-opacity: 0.22; }
+      .mod { stroke: #e9e7e0; stroke-opacity: 0.16; }
+      .name { fill: #e9e7e0; }
+      .label { fill: #8b897f; }
+      .sig { stroke: #8a97ff; }
+      .ctl { stroke: #8b897f; }
+      #a path { fill: #8a97ff; }
+      #b path { fill: #8b897f; }
     }
   </style>
   <defs>
@@ -27,28 +29,28 @@
     </marker>
   </defs>
 
-  <rect class="box" x="32" y="36" width="150" height="56" rx="12" />
+  <rect class="box" x="32" y="36" width="150" height="56" rx="10" />
   <text class="name" x="107" y="60" text-anchor="middle">オシレータ A</text>
   <text class="label" x="107" y="79" text-anchor="middle">波形・移調・ずれ</text>
-  <rect class="box" x="32" y="108" width="150" height="56" rx="12" />
+  <rect class="box" x="32" y="108" width="150" height="56" rx="10" />
   <text class="name" x="107" y="132" text-anchor="middle">オシレータ B</text>
   <text class="label" x="107" y="151" text-anchor="middle">波形・移調・ずれ</text>
-  <rect class="box" x="32" y="180" width="150" height="50" rx="12" />
+  <rect class="box" x="32" y="180" width="150" height="50" rx="10" />
   <text class="name" x="107" y="210" text-anchor="middle">ノイズ</text>
 
-  <rect class="box" x="246" y="96" width="120" height="84" rx="12" />
+  <rect class="box" x="246" y="96" width="120" height="84" rx="10" />
   <text class="name" x="306" y="132" text-anchor="middle">ミキサ</text>
   <text class="label" x="306" y="151" text-anchor="middle">音量を混合</text>
 
-  <rect class="box" x="430" y="96" width="130" height="84" rx="12" />
+  <rect class="box" x="430" y="96" width="130" height="84" rx="10" />
   <text class="name" x="495" y="132" text-anchor="middle">フィルタ</text>
   <text class="label" x="495" y="151" text-anchor="middle">遮断・共鳴</text>
 
-  <rect class="box" x="624" y="96" width="120" height="84" rx="12" />
+  <rect class="box" x="624" y="96" width="120" height="84" rx="10" />
   <text class="name" x="684" y="132" text-anchor="middle">アンプ</text>
   <text class="label" x="684" y="151" text-anchor="middle">音量を制御</text>
 
-  <rect class="box" x="808" y="110" width="100" height="56" rx="12" />
+  <rect class="box" x="808" y="110" width="100" height="56" rx="10" />
   <text class="name" x="858" y="143" text-anchor="middle">出力</text>
 
   <path class="sig" d="M182 64 H214 Q230 64 230 96 V128 H242" />
@@ -58,17 +60,17 @@
   <path class="sig" d="M560 138 H620" />
   <path class="sig" d="M744 138 H804" />
 
-  <rect class="mod" x="430" y="262" width="130" height="58" rx="12" />
+  <rect class="mod" x="430" y="262" width="130" height="58" rx="10" />
   <text class="name" x="495" y="286" text-anchor="middle">フィルタEnv</text>
   <text class="label" x="495" y="305" text-anchor="middle">ADSR</text>
   <path class="ctl" d="M495 262 V184" />
 
-  <rect class="mod" x="624" y="262" width="120" height="58" rx="12" />
+  <rect class="mod" x="624" y="262" width="120" height="58" rx="10" />
   <text class="name" x="684" y="286" text-anchor="middle">アンプEnv</text>
   <text class="label" x="684" y="305" text-anchor="middle">ADSR</text>
   <path class="ctl" d="M684 262 V184" />
 
-  <rect class="mod" x="246" y="262" width="120" height="58" rx="12" />
+  <rect class="mod" x="246" y="262" width="120" height="58" rx="10" />
   <text class="name" x="306" y="286" text-anchor="middle">LFO</text>
   <text class="label" x="306" y="305" text-anchor="middle">音程・フィルタ・音量</text>
   <path class="ctl" d="M366 291 H400 Q430 291 460 184" />
