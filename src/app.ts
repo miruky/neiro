@@ -8,11 +8,13 @@ import {
   PRESETS,
   RANGE,
   WAVEFORMS,
+  defaultPatch,
   deserializePatch,
   type Patch,
   type PatchStore,
 } from './lib/patch';
 import { SynthEngine } from './lib/engine';
+import { summarizePatch } from './lib/describe';
 import { isSharp, keyToMidi, midiToName, noteRange } from './lib/notes';
 import { renderCycle, toPath } from './lib/waveform';
 import { responsePath } from './lib/filterResponse';
@@ -156,9 +158,14 @@ export function createApp({ root, store, engine, initialPatch }: AppDeps): void 
     startScope();
   }
 
-  function seg(path: string, choices: readonly string[], labels: Record<string, string>): string {
+  function seg(
+    path: string,
+    choices: readonly string[],
+    labels: Record<string, string>,
+    groupLabel: string,
+  ): string {
     const current = getPath(patch, path);
-    return `<div class="segmented" role="radiogroup">${choices
+    return `<div class="segmented" role="radiogroup" aria-label="${groupLabel}">${choices
       .map(
         (c) =>
           `<button type="button" role="radio" aria-checked="${c === current}" class="seg${
@@ -200,7 +207,7 @@ export function createApp({ root, store, engine, initialPatch }: AppDeps): void 
   function oscModule(which: 'oscA' | 'oscB', no: string, title: string): string {
     return `<section class="module">
       <header class="module-head"><span class="module-no">${no}</span><h2>${title}</h2></header>
-      ${seg(`${which}.waveform`, WAVEFORMS, WAVE_LABEL)}
+      ${seg(`${which}.waveform`, WAVEFORMS, WAVE_LABEL, `${title}の波形`)}
       <div class="knobs">
         ${range(`${which}.octave`, RANGE.octave.min, RANGE.octave.max, 1)}
         ${range(`${which}.detune`, RANGE.detune.min, RANGE.detune.max, 1)}
@@ -281,18 +288,21 @@ export function createApp({ root, store, engine, initialPatch }: AppDeps): void 
             2基のオシレータ、ノイズ、フィルタ、2つのエンベロープ、LFO。つまみを動かすと、
             合成された波形・フィルタの周波数特性・出力の波が同時に描き直され、音の変化を目で追える。
           </p>
+          <p class="patch-summary" id="patch-summary">${summarizePatch(patch)}</p>
         </section>
 
         <section class="signal reveal" aria-label="信号の可視化">
           <figure class="viz">
             <figcaption class="kicker">合成波形</figcaption>
             <svg viewBox="0 0 320 120" preserveAspectRatio="none" role="img" aria-label="合成された1周期の波形">
+              <line class="viz-base" x1="0" y1="60" x2="320" y2="60" />
               <path id="wave-path" class="viz-line" d="" fill="none"/>
             </svg>
           </figure>
           <figure class="viz">
             <figcaption class="kicker">出力(オシロスコープ)</figcaption>
             <svg viewBox="0 0 320 120" preserveAspectRatio="none" role="img" aria-label="出力の波形">
+              <line class="viz-base" x1="0" y1="60" x2="320" y2="60" />
               <path id="scope-path" class="viz-line accent" d="M0 60 L320 60" fill="none"/>
             </svg>
           </figure>
@@ -311,6 +321,7 @@ export function createApp({ root, store, engine, initialPatch }: AppDeps): void 
             }" aria-label="マスター音量"/></label>
           <div class="actions">
             <button type="button" class="btn" id="act-random">${icons.dice}<span>ランダム</span></button>
+            <button type="button" class="btn" id="act-reset">${icons.reset}<span>初期化</span></button>
             <button type="button" class="btn" id="act-share">${icons.link}<span>共有リンク</span></button>
             <button type="button" class="btn" id="act-export">${icons.download}<span>書き出し</span></button>
             <button type="button" class="btn" id="act-import">${icons.upload}<span>読み込み</span></button>
@@ -323,7 +334,7 @@ export function createApp({ root, store, engine, initialPatch }: AppDeps): void 
           ${oscModule('oscB', '02', 'オシレータ B')}
           <section class="module">
             <header class="module-head"><span class="module-no">03</span><h2>フィルタ</h2></header>
-            ${seg('filter.type', FILTER_TYPES, FILTER_LABEL)}
+            ${seg('filter.type', FILTER_TYPES, FILTER_LABEL, 'フィルタの種類')}
             <div class="knobs">
               ${range('filter.cutoff', RANGE.cutoff.min, RANGE.cutoff.max, 1)}
               ${range('filter.resonance', RANGE.resonance.min, RANGE.resonance.max, 0.1)}
@@ -357,9 +368,9 @@ export function createApp({ root, store, engine, initialPatch }: AppDeps): void 
           </section>
           <section class="module">
             <header class="module-head"><span class="module-no">06</span><h2>LFO</h2></header>
-            ${seg('lfo.waveform', WAVEFORMS, WAVE_LABEL)}
+            ${seg('lfo.waveform', WAVEFORMS, WAVE_LABEL, 'LFOの波形')}
             <div class="seg-label">行き先</div>
-            ${seg('lfo.target', LFO_TARGETS, TARGET_LABEL)}
+            ${seg('lfo.target', LFO_TARGETS, TARGET_LABEL, 'LFOの行き先')}
             <div class="knobs">
               ${range('lfo.rate', RANGE.rate.min, RANGE.rate.max, 0.01)}
               ${range('lfo.depth', RANGE.depth.min, RANGE.depth.max, 0.01)}
@@ -402,6 +413,8 @@ export function createApp({ root, store, engine, initialPatch }: AppDeps): void 
     setPathAttr('#resp-path', responsePath(patch.filter, { width: 320, height: 120 }));
     setPathAttr('#amp-env-path', envelopePath(patch.ampEnv, 240, 70, 4));
     setPathAttr('#flt-env-path', envelopePath(patch.filterEnv, 240, 70, 4));
+    const summary = root.querySelector('#patch-summary');
+    if (summary) summary.textContent = summarizePatch(patch);
   }
 
   function setPathAttr(sel: string, d: string): void {
@@ -420,7 +433,12 @@ export function createApp({ root, store, engine, initialPatch }: AppDeps): void 
         const path = el.dataset.param as string;
         setPath(patch, path, Number(el.value));
         const disp = root.querySelector(`[data-display="${path}"]`);
-        if (disp) disp.textContent = formatValue(path, Number(el.value));
+        if (disp) {
+          disp.textContent = formatValue(path, Number(el.value));
+          disp.classList.remove('flash');
+          void (disp as HTMLElement).offsetWidth;
+          disp.classList.add('flash');
+        }
         commit();
         refreshVisuals();
       });
@@ -467,6 +485,10 @@ export function createApp({ root, store, engine, initialPatch }: AppDeps): void 
       randomSeed = (randomSeed * 1664525 + 1013904223) >>> 0;
       loadPatch(randomPatch(mulberry32(randomSeed)));
       notify('音色をランダムに作りました');
+    });
+    root.querySelector('#act-reset')?.addEventListener('click', () => {
+      loadPatch(defaultPatch());
+      notify('既定の音色に戻しました');
     });
     root.querySelector('#act-share')?.addEventListener('click', () => void copyShareLink());
     root.querySelector('#act-export')?.addEventListener('click', exportPatch);
