@@ -217,6 +217,14 @@ kbd {
   margin-top: 4px;
 }
 
+.patch-summary {
+  margin: 2px 0 0;
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  letter-spacing: 0.04em;
+  color: var(--ink-2);
+}
+
 /* ---- 信号の可視化(主役) ---- */
 
 .signal {
@@ -266,6 +274,14 @@ kbd {
 .viz-line.accent {
   stroke: var(--accent);
   stroke-width: 1.9;
+}
+
+.viz-base {
+  stroke: var(--ink);
+  stroke-opacity: 0.18;
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+  stroke-dasharray: 2 4;
 }
 
 /* ---- トランスポート(マスター+操作) ---- */
@@ -457,6 +473,19 @@ kbd {
   font-size: 0.78rem;
   color: var(--muted);
   text-align: right;
+}
+
+@keyframes valflash {
+  from {
+    color: var(--accent);
+  }
+  to {
+    color: var(--muted);
+  }
+}
+
+.knob-val.flash {
+  animation: valflash 0.45s var(--ease);
 }
 
 .knob input[type='range'] {

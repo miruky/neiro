@@ -34,4 +34,6 @@ export const icons = {
   moon: svg('<path d="M20 14a8 8 0 1 1-9.5-9.8 6.5 6.5 0 0 0 9.5 9.8z"/>'),
   // 画面(システム追従)
   monitor: svg('<rect x="3" y="4" width="18" height="13" rx="2"/><path d="M8 21h8M12 17v4"/>'),
+  // 反時計回りの矢印(初期化)
+  reset: svg('<path d="M4 10a8 8 0 1 1-1.5 5"/><path d="M4 5v5h5"/>'),
 } as const;
